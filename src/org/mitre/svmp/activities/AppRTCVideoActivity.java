@@ -93,11 +93,11 @@ public class AppRTCVideoActivity extends AppRTCActivity {
 
     @Override
     protected void connectToRoom() {
-        // Uncomment to get ALL WebRTC tracing and SENSITIVE libjingle logging.
-//        Logging.enableTracing(
-//            "/sdcard/trace.txt",
-//            EnumSet.of(Logging.TraceLevel.TRACE_ALL),
-//            Logging.Severity.LS_SENSITIVE);
+        //Uncomment to get ALL WebRTC tracing and SENSITIVE libjingle logging.
+        //Logging.enableTracing(
+        //    "/sdcard/trace.txt",
+        //    EnumSet.of(Logging.TraceLevel.TRACE_ALL),
+        //    Logging.Severity.LS_SENSITIVE);
 
         Point displaySize = new Point();
         getWindowManager().getDefaultDisplay().getSize(displaySize);

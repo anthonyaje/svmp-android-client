@@ -76,6 +76,8 @@ public class VideoStreamsView
   // used for performance instrumentation
   private PerformanceAdapter spi;
 
+  private I420Frame prev_frame = null;
+
   public VideoStreamsView(Context c, Point screenDimensions, PerformanceAdapter spi) {
     super(c);
     this.screenDimensions = screenDimensions;
@@ -95,15 +97,30 @@ public class VideoStreamsView
     final I420Frame frameCopy = framePool.takeFrame(frame).copyFrom(frame);
     boolean needToScheduleRender;
     synchronized (framesToRender) {
-      // A new render needs to be scheduled (via updateFrames()) iff there isn't
-      // already a render scheduled, which is true iff framesToRender is empty.
-      needToScheduleRender = framesToRender.isEmpty();
-      I420Frame frameToDrop = framesToRender.put(stream, frameCopy);
-      if (frameToDrop != null) {
-        framePool.returnFrame(frameToDrop);
-      }
+        // A new render needs to be scheduled (via updateFrames()) iff there isn't
+        // already a render scheduled, which is true iff framesToRender is empty.
+        needToScheduleRender = framesToRender.isEmpty();
+        I420Frame frameToDrop = framesToRender.put(stream, frameCopy);
+        Log.d("LATENCY", "queueFrame");
+        if (frameToDrop != null) {
+            framePool.returnFrame(frameToDrop);
+        }
     }
+    if(prev_frame!=null) {
+        Long tsLong = System.currentTimeMillis();
+        Log.d("LATENCY", "Render Time :" + tsLong);
+        Log.d("LATENCY", "Prev Frame: " + prev_frame.toString());
+        Log.d("LATENCT", "Dropping : " + String.format("0x%02X", prev_frame.yuvPlanes[0].get(307600)));
+        Log.d("LATENCY", "Frame to render: " + frameCopy.toString());
+        Log.d("LATENCT", "Rendering: " + String.format("0x%02X", frameCopy.yuvPlanes[0].get(307600)));
+        for (int i = 0; i < 3; i++) {
+            Log.d("LATENCY", "Compare Frame yuvplane " + i + ": " + prev_frame.yuvPlanes[i].compareTo(frameCopy.yuvPlanes[i]));
+        }
+    }
+    prev_frame = frameCopy;
+
     if (needToScheduleRender) {
+        Log.d("LATENCY","Run updateFrame thread. Stream: "+stream);
       queueEvent(new Runnable() {
           public void run() {
             updateFrames();

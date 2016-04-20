@@ -75,10 +75,9 @@ public class TouchHandler implements Constants {
         if (!activity.isConnected() || !gotScreenInfo) return false;
 
         Long tsLong = System.currentTimeMillis();
-
+        Log.d("LATENCY", spi.getTouchUpdates()+" Touch time :" + tsLong);
         // increment the touch update count for performance measurement
         spi.incrementTouchUpdates();
-        Log.d("LATENCY", spi.getTouchUpdates()+" Touch time :" + tsLong);
 
         // Create Protobuf message builders
         SVMPProtocol.Request.Builder msg = SVMPProtocol.Request.newBuilder();
