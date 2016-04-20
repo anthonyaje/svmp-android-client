@@ -44,4 +44,9 @@ public class PerformanceAdapter {
         if (pointPerformanceData != null)
             pointPerformanceData.setPing(startDate, endDate);
     }
+
+    //aje: getter for the touch count
+    public int getTouchUpdates(){
+        return spanPerformanceData.getTouchUpdates();
+    }
 }
