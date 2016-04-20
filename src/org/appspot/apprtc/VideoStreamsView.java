@@ -77,6 +77,7 @@ public class VideoStreamsView
   private PerformanceAdapter spi;
 
   private I420Frame prev_frame = null;
+  private byte prev_byte = (byte) 0;
 
   public VideoStreamsView(Context c, Point screenDimensions, PerformanceAdapter spi) {
     super(c);
@@ -101,26 +102,13 @@ public class VideoStreamsView
         // already a render scheduled, which is true iff framesToRender is empty.
         needToScheduleRender = framesToRender.isEmpty();
         I420Frame frameToDrop = framesToRender.put(stream, frameCopy);
-        Log.d("LATENCY", "queueFrame");
+        //Log.d("LATENCY", "queueFrame");
         if (frameToDrop != null) {
             framePool.returnFrame(frameToDrop);
         }
     }
-    if(prev_frame!=null) {
-        Long tsLong = System.currentTimeMillis();
-        Log.d("LATENCY", "Render Time :" + tsLong);
-        Log.d("LATENCY", "Prev Frame: " + prev_frame.toString());
-        Log.d("LATENCT", "Dropping : " + String.format("0x%02X", prev_frame.yuvPlanes[0].get(307600)));
-        Log.d("LATENCY", "Frame to render: " + frameCopy.toString());
-        Log.d("LATENCT", "Rendering: " + String.format("0x%02X", frameCopy.yuvPlanes[0].get(307600)));
-        for (int i = 0; i < 3; i++) {
-            Log.d("LATENCY", "Compare Frame yuvplane " + i + ": " + prev_frame.yuvPlanes[i].compareTo(frameCopy.yuvPlanes[i]));
-        }
-    }
-    prev_frame = frameCopy;
 
     if (needToScheduleRender) {
-        Log.d("LATENCY","Run updateFrame thread. Stream: "+stream);
       queueEvent(new Runnable() {
           public void run() {
             updateFrames();
@@ -147,7 +135,17 @@ public class VideoStreamsView
     }
     abortUnless(/*localFrame != null || */remoteFrame != null,
                 "Nothing to render!");
-    requestRender();
+    //aje debug latency
+    byte curr_byte = remoteFrame.yuvPlanes[0].get(307600);
+    if(prev_byte!=curr_byte) {
+      Long tsLong = System.currentTimeMillis();
+      Log.d("LATENCY", "Render Time: " + tsLong);
+      Log.d("LATENCT", "Dropping : " + String.format("0x%02X", prev_byte));
+      Log.d("LATENCT", "Rendering: " + String.format("0x%02X", curr_byte));
+    }
+    prev_byte = curr_byte;
+
+      requestRender();
   }
 
   /** Inform this View of the dimensions of frames coming from |stream|. */
@@ -200,7 +198,7 @@ public class VideoStreamsView
     long now = System.nanoTime();
     if (lastFPSLogTime == -1 || now - lastFPSLogTime > 1e9) {
       double fps = numFramesSinceLastLog / ((now - lastFPSLogTime) / 1e9);
-      Log.d(TAG, "Rendered FPS: " + fps);
+      //Log.d(TAG, "Rendered FPS: " + fps);
       lastFPSLogTime = now;
       numFramesSinceLastLog = 1;
     }

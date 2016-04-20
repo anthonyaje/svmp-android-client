@@ -75,7 +75,7 @@ public class TouchHandler implements Constants {
         if (!activity.isConnected() || !gotScreenInfo) return false;
 
         Long tsLong = System.currentTimeMillis();
-        Log.d("LATENCY", spi.getTouchUpdates()+" Touch time :" + tsLong);
+        Log.d("LATENCY", spi.getTouchUpdates()+" Touch time: " + tsLong);
         // increment the touch update count for performance measurement
         spi.incrementTouchUpdates();
 
