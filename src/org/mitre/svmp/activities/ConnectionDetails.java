@@ -64,6 +64,8 @@ public class ConnectionDetails extends SvmpActivity {
         super.onCreate(savedInstanceState, R.layout.connection_details);
     }
 
+
+
     @Override
     protected void populateLayout() {
         // get views
@@ -79,6 +81,7 @@ public class ConnectionDetails extends SvmpActivity {
         authTypes = AuthRegistry.getAuthTypes();
         AuthModuleArrayAdapter adapter = new AuthModuleArrayAdapter(this, authTypes);
         authTypeView.setAdapter(adapter);
+
 
         // check if an existing ConnectionInfo ID was sent with the Intent
         Intent intent = getIntent();
@@ -115,8 +118,12 @@ public class ConnectionDetails extends SvmpActivity {
         }
         // this is a new connection, fill in the default port
         else {
+            //aje debug
+            descriptionView.setText(Constants.CONN_DESC);
+            hostView.setText(Constants.CONN_HOST);
+            usernameView.setText(Constants.USER);
             portView.setText(String.valueOf(Constants.DEFAULT_PORT));
-            encryptionView.setSelection(ENCRYPTION_SSLTLS); // by default, encryption is turned on
+            encryptionView.setSelection(ENCRYPTION_NONE); // by default, encryption is turned on
         }
 
         if (!Constants.API_14) {

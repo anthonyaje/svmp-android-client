@@ -26,6 +26,10 @@ public interface Constants {
     // this password is used to open that file
     public static final String TRUSTSTORE_PASSWORD = "changeme_clienttstorepass";
 
+    public static final String CONN_DESC = "aje debug";
+    public static final String CONN_HOST = "192.168.128.15";
+    public static final String USER = "anthony222";
+
     public static final int DEFAULT_PORT = 3000;
     public static final String ACTION_REFRESH = "org.mitre.svmp.ACTION_REFRESH"; // causes SvmpActivity to refresh its layout
     public static final String ACTION_STOP_SERVICE = "org.mitre.svmp.ACTION_STOP_SERVICE"; // causes

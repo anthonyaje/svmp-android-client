@@ -58,8 +58,8 @@
     <string name="preferenceValue_performance_pingInterval">5000</string>
     <string name="preferenceValue_connection_useBackground">true</string>
     <string name="preferenceValue_connection_useMTM">false</string>
-    <string name="preferenceValue_connection_showEncryption">false</string>
-    <string name="preferenceValue_connection_useDesktopMode">false</string>
+    <string name="preferenceValue_connection_showEncryption">true</string>
+    <string name="preferenceValue_connection_useDesktopMode">true</string>
     
     <!-- Preference page elements -->
     <string name="preferenceScreen_title">SVMP Preferences</string>
