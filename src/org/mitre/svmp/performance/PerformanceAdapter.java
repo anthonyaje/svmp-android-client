@@ -49,4 +49,11 @@ public class PerformanceAdapter {
     public int getTouchUpdates(){
         return spanPerformanceData.getTouchUpdates();
     }
+    public int getTakeFlag(){ return spanPerformanceData.getTakeFlag(); }
+    public void setTakeFlag(int val){ spanPerformanceData.setTakeFlag(val); }
+    public long getTouchTime(){ return spanPerformanceData.getTouchTime(); }
+    public void setTouchTime(long time){ spanPerformanceData.setTouchTime(time); }
+    //public long getRenderTime(){ return spanPerformanceData.getRenderTime(); }
+    //public void setRenderTime(long time){ spanPerformanceData.setRenderTime(time); }
+
 }

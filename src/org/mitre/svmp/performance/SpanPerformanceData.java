@@ -23,6 +23,9 @@ public class SpanPerformanceData {
     private int frameCount;
     private int sensorUpdates;
     private int touchUpdates;
+    private long touchTime= -1;
+    //private long renderTime=0;
+    private int take_flag=1;
 
     public SpanPerformanceData() {}
 
@@ -37,6 +40,9 @@ public class SpanPerformanceData {
         frameCount = 0;
         sensorUpdates = 0;
         touchUpdates = 0;
+        touchTime = -1;
+        //renderTime = 0;
+        take_flag = 1;
 
         return copy;
     }
@@ -67,4 +73,12 @@ public class SpanPerformanceData {
         return String.format("frameCount '%d', sensorUpdates '%d', touchUpdates '%d'",
                 frameCount, sensorUpdates, touchUpdates);
     }
+
+    public long getTouchTime(){ return this.touchTime; }
+    public void setTouchTime(long val){ this.touchTime = val; }
+    public void setTakeFlag(int val){ this.take_flag = val; }
+    public int getTakeFlag(){ return this.take_flag; }
+    //public long getRenderTime(){ return this.renderTime; }
+    //public void setRenderTime(long val){ this.renderTime = val; }
+
 }

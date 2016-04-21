@@ -137,11 +137,16 @@ public class VideoStreamsView
                 "Nothing to render!");
     //aje debug latency
     byte curr_byte = remoteFrame.yuvPlanes[0].get(307600);
-    if(prev_byte!=curr_byte) {
-      Long tsLong = System.currentTimeMillis();
-      Log.d("LATENCY", "Render Time: " + tsLong);
-      Log.d("LATENCT", "Dropping : " + String.format("0x%02X", prev_byte));
-      Log.d("LATENCT", "Rendering: " + String.format("0x%02X", curr_byte));
+    if(prev_byte != curr_byte) {
+        if(spi.getTouchTime() != -1) {
+            Long tsLong = System.currentTimeMillis();
+            Log.d("LATENCY", "Render Time: " + tsLong);
+            Log.d("LATENCY", "Touch-to-Response: " + (tsLong - spi.getTouchTime()));
+            Log.d("LATENCT", "Dropping : " + String.format("0x%02X", prev_byte));
+            Log.d("LATENCT", "Rendering: " + String.format("0x%02X", curr_byte));
+            spi.setTakeFlag(1);
+            spi.setTouchTime(-1);
+        }
     }
     prev_byte = curr_byte;
 

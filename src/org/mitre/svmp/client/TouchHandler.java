@@ -71,11 +71,19 @@ public class TouchHandler implements Constants {
         return true;
     }
 
-    public boolean onTouchEvent(final MotionEvent event) {
-        if (!activity.isConnected() || !gotScreenInfo) return false;
-
+    public void measureTouchTime(){
         Long tsLong = System.currentTimeMillis();
         Log.d("LATENCY", spi.getTouchUpdates()+" Touch time: " + tsLong);
+        if(spi.getTakeFlag() == 1){
+            spi.setTouchTime(tsLong);
+            spi.setTakeFlag(0);
+        }
+    }
+
+    public boolean onTouchEvent(final MotionEvent event) {
+        if (!activity.isConnected() || !gotScreenInfo) return false;
+        //take timestamp of the first touch to the spi
+        measureTouchTime();
         // increment the touch update count for performance measurement
         spi.incrementTouchUpdates();
 
