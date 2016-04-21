@@ -227,8 +227,10 @@ public class AppRTCActivity extends Activity implements StateObserver, MessageHa
 
     // called from PCObserver, SDPObserver, RotationHandler, and TouchHandler
     public void sendMessage(Request msg) {
+        Long tsLong = System.currentTimeMillis();
         if (appRtcClient != null)
             appRtcClient.sendMessage(msg);
+        Log.d("LATENCY", "SendMessage Time (after) : " + tsLong);
     }
 
     // MessageHandler interface method
