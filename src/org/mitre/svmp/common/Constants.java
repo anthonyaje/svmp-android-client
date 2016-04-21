@@ -29,6 +29,8 @@ public interface Constants {
     public static final String CONN_DESC = "aje debug";
     public static final String CONN_HOST = "192.168.128.15";
     public static final String USER = "anthony222";
+    public static final String USR_PWD = "Anthony222@";
+
 
     public static final int DEFAULT_PORT = 3000;
     public static final String ACTION_REFRESH = "org.mitre.svmp.ACTION_REFRESH"; // causes SvmpActivity to refresh its layout
