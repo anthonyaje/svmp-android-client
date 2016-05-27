@@ -129,26 +129,31 @@ public class VideoStreamsView
 //      texImage2D(localFrame, yuvTextures[0]);
 //      framePool.returnFrame(localFrame);
 //    }
+
+      //aje debug latency
+      int coordinate = (1280*10+55);
+      byte curr_byte = remoteFrame.yuvPlanes[0].get(coordinate);
+      if(prev_byte != curr_byte) {
+          if(spi.getTouchTime() != -1) {
+              Long tsLong = System.currentTimeMillis();
+              Log.d("LATENCY", "Render at"+coordinate+"Time: " + tsLong);
+              Log.d("LATENCY", "Touch-to-Response: " + (tsLong - spi.getTouchTime()));
+              Log.d("LATENCY", "Dropping : " + String.format("0x%02X", prev_byte));
+              Log.d("LATENCY", "Rendering: " + String.format("0x%02X", curr_byte));
+              spi.setTakeFlag(1);
+              spi.setTouchTime(-1);
+              for(int i=0; i<10; i++)
+                remoteFrame.yuvPlanes[0].put(coordinate+i,prev_byte);
+          }
+      }
+      prev_byte = curr_byte;
+
     if (remoteFrame != null) {
       texImage2D(remoteFrame, yuvTextures[1]);
       framePool.returnFrame(remoteFrame);
     }
     abortUnless(/*localFrame != null || */remoteFrame != null,
                 "Nothing to render!");
-    //aje debug latency
-    byte curr_byte = remoteFrame.yuvPlanes[0].get(307600);
-    if(prev_byte != curr_byte) {
-        if(spi.getTouchTime() != -1) {
-            Long tsLong = System.currentTimeMillis();
-            Log.d("LATENCY", "Render Time: " + tsLong);
-            Log.d("LATENCY", "Touch-to-Response: " + (tsLong - spi.getTouchTime()));
-            Log.d("LATENCT", "Dropping : " + String.format("0x%02X", prev_byte));
-            Log.d("LATENCT", "Rendering: " + String.format("0x%02X", curr_byte));
-            spi.setTakeFlag(1);
-            spi.setTouchTime(-1);
-        }
-    }
-    prev_byte = curr_byte;
 
       requestRender();
   }
